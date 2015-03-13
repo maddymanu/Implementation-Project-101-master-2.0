@@ -7,9 +7,9 @@
 
 class Graph
 {
-    int V;    // No. of vertices
+    int V;   
 
-    void Util(int v, bool visited[]);  
+    void Util(int v, bool visited[]);
 public:
     Graph(int V);
     void addEd(int v, int w);
@@ -20,15 +20,15 @@ public:
     vector<pair<int,int>> vertciesForTSP15;
 
 
-  void removeEd(int u, int v);
+    void removeEd(int u, int v);
 
-  void printEulerTour();
-  void printEulerUtil(int s);
+    void printEulerTour();
+    void printEulerUtil(int s);
 
-  int DFSCt(int v, bool visited[]);
+    int DFSCt(int v, bool visited[]);
 
 
-  bool isValidNextEdge(int u, int v);
+    bool isValid(int u, int v);
 };
 
 
@@ -115,7 +115,7 @@ void Graph::printEulerUtil(int u)
       int v = *i;
 
       // If edge u-v is not removed and it's a a valid next edge
-      if (v != -1 && isValidNextEdge(u, v))
+      if (v != -1 && isValid(u, v))
       {
           //cout << u << "-" << v << "  ";
           vertciesForTSP15.push_back(make_pair (u,v));
@@ -126,7 +126,7 @@ void Graph::printEulerUtil(int u)
 }
 
 
-bool Graph::isValidNextEdge(int u, int v)
+bool Graph::isValid(int u, int v)
 {
   // The edge u-v is valid in one of the following two cases:
 
