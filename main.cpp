@@ -64,9 +64,9 @@ int main() {
 	int W, H, N;
 
 
-	W = 100;
-	H = 100;
-	N = 100;
+	W = 1000;
+	H = 1000;
+	N = 1000;
 
 
 	cout << "Please Enter Number of Trials n = .... " << endl;
@@ -110,10 +110,6 @@ int main() {
 			sumTSP2 += tsp2Cost;
 			sumTSP1_5 += tsp15Cost;
 
-			//change this
-			// sqMST += pow(mstCost , 2);
-			// sqTSP2 += pow(tsp2Cost , 2);
-			// sqTSP1_5 += pow(tsp15Cost , 2);
 
 			cout << mstCost << " " << tsp2Cost << " " << tsp15Cost << endl;
 
