@@ -228,9 +228,9 @@ MST::MST(float** input, int size) {
 MST::~MST() {
 	//delete adjacentMatrix;
         //delete adjacentMatrixMST;
-	delete key;
-	delete mstSet;
-	delete parent;
+	//delete key;
+	//delete mstSet;
+	//delete parent;
         //delete adjListMST;
 }
 
