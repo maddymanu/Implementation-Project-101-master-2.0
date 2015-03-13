@@ -8,29 +8,26 @@
 class Graph
 {
     int V;    // No. of vertices
-    
-    void DFSUtil(int v, bool visited[]);  // A function used by DFS
+
+    void Util(int v, bool visited[]);  
 public:
-    Graph(int V);   // Constructor
-    void addEdge(int v, int w);   // function to add an edge to graph
-    void DFS();    // prints DFS traversal of the complete graph
+    Graph(int V);
+    void addEd(int v, int w);
+    void DFS();
     vector<int> vertciesForTSP2;
-    list<int> *adj;    // Pointer to an array containing adjacency lists
+    list<int> *adj;
     int totalEulerCost = 0;
     vector<pair<int,int>> vertciesForTSP15;
 
 
-  void rmvEdge(int u, int v);
- 
-  // Methods to print Eulerian tour
+  void removeEd(int u, int v);
+
   void printEulerTour();
   void printEulerUtil(int s);
- 
-  // This function returns count of vertices reachable from v. It does DFS
-  int DFSCount(int v, bool visited[]);
- 
-  // Utility function to check if edge u-v is a valid next edge in
-  // Eulerian trail or circuit
+
+  int DFSCt(int v, bool visited[]);
+
+
   bool isValidNextEdge(int u, int v);
 };
 
@@ -40,41 +37,38 @@ Graph::Graph(int V)
     this->V = V;
     adj = new list<int>[V];
 }
- 
-void Graph::addEdge(int v, int w)
+
+void Graph::addEd(int v, int w)
 {
     adj[v].push_back(w); // Add w to v’s list.
     adj[w].push_back(v);
 }
 
 
-void Graph::DFSUtil(int v, bool visited[])
+void Graph::Util(int v, bool visited[])
 {
     // Mark the current node as visited and print it
     visited[v] = true;
     //cout << v << " ";
     vertciesForTSP2.push_back(v);
- 
-    // Recur for all the vertices adjacent to this vertex
+
     list<int>::iterator i;
     for(i = adj[v].begin(); i != adj[v].end(); ++i)
         if(!visited[*i])
-            DFSUtil(*i, visited);
+            Util(*i, visited);
 }
 
 
 void Graph::DFS()
 {
-    // Mark all the vertices as not visited
     bool *visited = new bool[V];
     for(int i = 0; i < V; i++)
         visited[i] = false;
- 
-    // Call the recursive helper function to print DFS traversal
-    // starting from all vertices one by one
+
+
     for(int i = 0; i < V; i++)
         if(visited[i] == false)
-            DFSUtil(i, visited);
+            Util(i, visited);
 }
 
 
@@ -84,12 +78,12 @@ void Graph::DFS()
 
 //For TSP1,5
 
-void Graph::rmvEdge(int u, int v)
+void Graph::removeEd(int u, int v)
 {
   // Find v in adjacency list of u and replace it with -1
   list<int>::iterator iv = find(adj[u].begin(), adj[u].end(), v);
   *iv = -1;
- 
+
   // Find u in adjacency list of v and replace it with -1
   list<int>::iterator iu = find(adj[v].begin(), adj[v].end(), u);
   *iu = -1;
@@ -103,7 +97,7 @@ void Graph::printEulerTour()
   for (int i = 0; i < V; i++)
       if (adj[i].size() & 1)
         {   u = i; break;  }
- 
+
   // Print tour starting from oddv
   printEulerUtil(u);
   cout << endl;
@@ -119,13 +113,13 @@ void Graph::printEulerUtil(int u)
   for (i = adj[u].begin(); i != adj[u].end(); ++i)
   {
       int v = *i;
- 
+
       // If edge u-v is not removed and it's a a valid next edge
       if (v != -1 && isValidNextEdge(u, v))
       {
           //cout << u << "-" << v << "  ";
           vertciesForTSP15.push_back(make_pair (u,v));
-          rmvEdge(u, v);
+          removeEd(u, v);
           printEulerUtil(v);
       }
   }
@@ -135,7 +129,7 @@ void Graph::printEulerUtil(int u)
 bool Graph::isValidNextEdge(int u, int v)
 {
   // The edge u-v is valid in one of the following two cases:
- 
+
   // 1) If v is the only adjacent vertex of u
   int count = 0;  // To store count of adjacent vertices
   list<int>::iterator i;
@@ -144,43 +138,43 @@ bool Graph::isValidNextEdge(int u, int v)
         count++;
   if (count == 1)
     return true;
- 
- 
+
+
   // 2) If there are multiple adjacents, then u-v is not a bridge
   // Do following steps to check if u-v is a bridge
- 
+
   // 2.a) count of vertices reachable from u
   bool visited[V];
   memset(visited, false, V);
-  int count1 = DFSCount(u, visited);
- 
+  int count1 = DFSCt(u, visited);
+
   // 2.b) Remove edge (u, v) and after removing the edge, count
   // vertices reachable from u
-  rmvEdge(u, v);
+  removeEd(u, v);
   memset(visited, false, V);
-  int count2 = DFSCount(u, visited);
- 
+  int count2 = DFSCt(u, visited);
+
   // 2.c) Add the edge back to the graph
-  addEdge(u, v);
- 
+  addEd(u, v);
+
   // 2.d) If count1 is greater, then edge (u, v) is a bridge
   return (count1 > count2)? false: true;
 }
 
 
 
-int Graph::DFSCount(int v, bool visited[])
+int Graph::DFSCt(int v, bool visited[])
 {
   // Mark the current node as visited
   visited[v] = true;
   int count = 1;
- 
+
   // Recur for all vertices adjacent to this vertex
   list<int>::iterator i;
   for (i = adj[v].begin(); i != adj[v].end(); ++i)
       if (*i != -1 && !visited[*i])
-          count += DFSCount(*i, visited);
- 
+          count += DFSCt(*i, visited);
+
   return count;
 }
 
@@ -190,12 +184,12 @@ int Graph::DFSCount(int v, bool visited[])
 // {
 //     int src, dest, weight;
 // };
- 
+
 
 // struct Graph
 // {
 //     int V, E;
- 
+
 //     struct Edge* edge;
 // };
 
@@ -204,9 +198,9 @@ int Graph::DFSCount(int v, bool visited[])
 //     struct Graph* graph = (struct Graph*) malloc( sizeof(struct Graph) );
 //     graph->V = V;
 //     graph->E = E;
- 
+
 //     graph->edge = (struct Edge*) malloc( graph->E * sizeof( struct Edge ) );
- 
+
 //     return graph;
 // }
 
@@ -214,8 +208,8 @@ int Graph::DFSCount(int v, bool visited[])
 //use Prim's algorithm or Kruskal algorithm. Copied from 'http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/'
 MST::MST(float** input, int size) {
     adjacentMatrix = input;
-    key = new int[size];   
-    mstSet = new bool[size];  
+    key = new int[size];
+    mstSet = new bool[size];
     parent = new int[size];
 
     N = size;
@@ -226,25 +220,25 @@ MST::~MST() {
 }
 
 //use Prim's algorithm or Kruskal algorithm. Copied from 'http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/'
-void MST::makeTree() { 
+void MST::makeTree() {
      // Initialize all keys as INFINITE
      for (int i = 0; i < N; i++)
         key[i] = INT_MAX, mstSet[i] = false;
- 
+
      // Always include first 1st vertex in MST.
      key[0] = 0;     // Make key 0 so that this vertex is picked as first vertex
-     parent[0] = -1; // First node is always root of MST 
- 
+     parent[0] = -1; // First node is always root of MST
+
      // The MST will have V vertices
      for (int count = 0; count < N-1; count++)
      {
         // Pick thd minimum key vertex from the set of vertices
         // not yet included in MST
         int u = minKey(key, mstSet);
- 
+
         // Add the picked vertex to the MST Set
         mstSet[u] = true;
- 
+
         // Update key value and parent index of the adjacent vertices of
         // the picked vertex. Consider only those vertices which are not yet
         // included in MST
@@ -264,11 +258,11 @@ int MST::minKey(int key[], bool mstSet[])
 {
    // Initialize min value
    int min = INT_MAX, min_index;
- 
+
    for (int v = 0; v < N; v++)
      if (mstSet[v] == false && key[v] < min)
          min = key[v], min_index = v;
- 
+
    return min_index;
 }
 
@@ -283,7 +277,7 @@ void MST::printMST() {
 		cout<<parent[i]<<" - "<<i<<"  "<<adjacentMatrix[i][parent[i]]<<endl;
         //adjacentMatrixMST[parent[i]][i] = adjacentMatrix[i][parent[i]];
     mstCost += adjacentMatrix[i][parent[i]];
-        
+
 	}
 
   cout << "MST COST IS ---------------------------------> " << mstCost << endl;
@@ -304,7 +298,7 @@ void MST::printMST() {
 
 void MST::LoadInput(int& node_num, int& edge_num, int*& edges, int*& weights, float** adjacentMatrix, int N) {
     int e = 0;
-    
+
 
     for (int i = 0; i < N; i++) {
 
@@ -319,7 +313,7 @@ void MST::LoadInput(int& node_num, int& edge_num, int*& edges, int*& weights, fl
 
 
         }
-        
+
     }
 
     cout << " Odd Vertices are" << oddArray.size() << endl;
@@ -353,10 +347,10 @@ void MST::LoadInput(int& node_num, int& edge_num, int*& edges, int*& weights, fl
 
 
 
-    if (e != edge_num) { 
+    if (e != edge_num) {
         cout<<"the number of edge is wrong"<<endl;
 
-        exit(1); 
+        exit(1);
     }
 }
 
@@ -369,7 +363,7 @@ void MST::PrintMatching(int node_num, PerfectMatching* pm) {
             //printf("%d %d\n", i, j);
             //cout << " Vertices are " << oddArray[i] << " to " << oddArray[j] << endl;
 
-        } 
+        }
     }
 }
 
@@ -412,7 +406,7 @@ int MST::mstCost() {
     //cout<<parent[i]<<" - "<<i<<"  "<<adjacentMatrix[i][parent[i]]<<endl;
         //adjacentMatrixMST[parent[i]][i] = adjacentMatrix[i][parent[i]];
     mstCost += adjacentMatrix[i][parent[i]];
-        
+
   }
 
 
@@ -426,7 +420,7 @@ int MST::makeTSP2() {
 
     Graph g(N);
     for (int i = 1; i < N; i++) {
-        g.addEdge(parent[i], i);
+        g.addEd(parent[i], i);
     }
 
     g.DFS();
@@ -460,7 +454,7 @@ int MST::makeTSP2() {
 
 
 int MST::makeTSP1_5() {
-	
+
 	//construct minimum-weight-matching for the given MST
 	// minimumMatching();
 
@@ -475,7 +469,7 @@ int MST::makeTSP1_5() {
     int i, e, node_num = N-1, edge_num;
     int* edges;
     int* weights;
-    
+
 
     LoadInput(node_num, edge_num, edges, weights, adjacentMatrix, N);
     node_num = numOfOdd;
@@ -499,13 +493,13 @@ int MST::makeTSP1_5() {
 
     // double cost = ComputePerfectMatchingCost(node_num, edge_num, edges, weights, pm);
     // printf("Total cost of the perfect min-weight matching = %.1f\n", cost);
-    
+
     PrintMatching(node_num, pm);
 
     //addung original MST
     Graph g(N);
     for (int i = 1; i < N; i++) {
-        g.addEdge(parent[i], i);
+        g.addEd(parent[i], i);
     }
 
 
@@ -517,7 +511,7 @@ int MST::makeTSP1_5() {
         if (i2 < j2) {
             //printf("%d %d\n", i2, j2);
             //cout << " Vertices are " << oddArray[i2] << " to " << oddArray[j2] << endl;
-            g.addEdge(oddArray[i2], oddArray[j2]);
+            g.addEd(oddArray[i2], oddArray[j2]);
 
         }
     }
@@ -529,7 +523,7 @@ int MST::makeTSP1_5() {
 
     //now g should have all the edges upto PM+MST
 
-    //complete euler tour on g. 
+    //complete euler tour on g.
     cout << "printing tour again" << endl;
     int totalTSP15 = 0;
     for (auto pos = vTSP15.begin() ; pos != vTSP15.end(); ++pos)
@@ -551,12 +545,12 @@ int MST::makeTSP1_5() {
 
     return totalTSP15;
 
-	//calculate heuristic TSP cost 
+	//calculate heuristic TSP cost
 }
 
 // void MST::minimumMatching() { //if you choose O(n^2)
-// 	//find minimum-weight matching for the MST. 
-	
+// 	//find minimum-weight matching for the MST.
+
 // 	//you should carefully choose a matching algorithm to optimize the TSP cost.
 // }
 
