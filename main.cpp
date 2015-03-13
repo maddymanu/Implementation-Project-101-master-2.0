@@ -94,13 +94,13 @@ int main() {
 			adjacentMatrix = pointset.getAdjacentMatrix();
 
 			//Deliverable A: From pointset and adjacentMatrix, you should construct MST with Prim or Kruskal
-			MST mst(adjacentMatrix, N);
+			MST *mst = new MST(adjacentMatrix, N);
 
-			mst.makeTree();
+			mst->makeTree();
 			//mst.printMST();
-			int mstCost = mst.mstCost();
-			int tsp2Cost = mst.makeTSP2();
-			int tsp15Cost = mst.makeTSP1_5();
+			int mstCost = mst->mstCost();
+			int tsp2Cost = mst->makeTSP2();
+			int tsp15Cost = mst->makeTSP1_5();
 
 			MST_COSTS.push_back(mstCost);
 			TSP2_COSTS.push_back(tsp2Cost);
@@ -112,6 +112,7 @@ int main() {
 
 			
 			//delete adjacentMatrix;
+			delete mst;
 
 
 
