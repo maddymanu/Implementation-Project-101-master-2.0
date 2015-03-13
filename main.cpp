@@ -64,9 +64,9 @@ int main() {
 	int W, H, N;
 
 
-	W = 5000;
-	H = 3000;
-	N = 7000;
+	W = 100;
+	H = 100;
+	N = 100;
 
 
 	cout << "Please Enter Number of Trials n = .... " << endl;
@@ -122,14 +122,14 @@ int main() {
 
 
 	long double sum = std::accumulate(MST_COSTS.begin(), MST_COSTS.end(), 0.0);
-	cout << "sum is " << sum << endl;
+	//cout << "sum is " << sum << endl;
 	long double mean2 = sum / MST_COSTS.size();
-	cout << "mean2 is " << mean2 << endl;
+	//cout << "mean2 is " << mean2 << endl;
 	//
 	long double sq_sum = std::inner_product(MST_COSTS.begin(), MST_COSTS.end(), MST_COSTS.begin(), 0.0);
-	cout << "sq_sum is " << sq_sum << endl;
+	//cout << "sq_sum is " << sq_sum << endl;
  long	double stdev = std::sqrt(sq_sum / MST_COSTS.size() - mean2 * mean2);
-	cout << "stdDev is " << stdev << endl;
+//	cout << "stdDev is " << stdev << endl;
 	cout << "THE STANDARD DEV FOR MST IS    " << stdev << endl;
 
 
