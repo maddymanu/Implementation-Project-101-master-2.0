@@ -231,7 +231,7 @@ MST::~MST() {
 	delete key;
 	delete mstSet;
 	delete parent;
-  //delete adjListMST;
+  //delete adjListMST; erge
 }
 
 //use Prim's algorithm or Kruskal algorithm. Copied from 'http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/'
