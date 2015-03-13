@@ -59,11 +59,11 @@ int main() {
 	set< pair<int,int> > generatedPointset;
 	float** adjacentMatrix;
 	int W, H, N;
-	Point pointset;
+
 
 	W = 5000;
 	H = 7000;
-	N = 100;
+	N = 1000;
 
 
 	cout << "Please Enter Number of Trials n = .... " << endl;
@@ -83,9 +83,9 @@ int main() {
 
 
 	for(int i=0 ; i<numTrials ; i++) {
-
+		  Point pointset;
 			pointset.generatePoint(W, H, N); //max(W,H,N) should be < 20000 because of memory limitation
-			pointset.printPointset();
+			//pointset.printPointset();
 
 			generatedPointset = pointset.getPointset();
 			adjacentMatrix = pointset.getAdjacentMatrix();
@@ -138,20 +138,23 @@ int main() {
 	cout << "THE MEAN FOR TSP2 IS .. " << sumTSP2/numTrials << endl;
 	cout << "THE MEAN FOR TSP1_5 IS .. " << sumTSP1_5/numTrials << endl;
 
-	//cout << (sqMST) << endl;
+	// cout << (sqMST) << endl;
 	double mean = sumMST/numTrials;
-	double sqSum = 0;
+	//
 	// for(auto it = MST_COSTS.begin() ; it != MST_COSTS.end()-1 ; it++) {
 	//
 	// 	//sqSum += pow((*it) - mean , 2);
 	// 	cout << pow((*it) - mean , 2) << endl;
 	// }
+	//
 
+	double sqSum = 0;
 	for(int i=0 ; i<numTrials ; i++) {
 		cout << MST_COSTS[i] << endl;
+		sqSum += pow((MST_COSTS[i]) - mean , 2);
 	}
-
-	double stdev = 0;
+	//
+	// double stdev = 0;
 
 	//delete MST_COSTS;
 
@@ -165,7 +168,7 @@ int main() {
 //
 // static long double stdev = sqrt(accum / (MST_COSTS.size()-1));
 
-cout << "STD DEV IS---> " << stdev << endl;
+//cout << "STD DEV IS---> " << stdev << endl;
 
 
 	// int a = (sqMST/numTrials) ;
