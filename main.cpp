@@ -1,5 +1,8 @@
 #include "common.h"
 #include "Point.h"
+#include <iostream>
+#include <cstring>
+#include <algorithm>
 #include "MST.h"
 #include "Minmatching/PerfectMatching.h"
 
@@ -62,8 +65,8 @@ int main() {
 
 
 	W = 5000;
-	H = 7000;
-	N = 1000;
+	H = 3000;
+	N = 7000;
 
 
 	cout << "Please Enter Number of Trials n = .... " << endl;
@@ -77,9 +80,9 @@ int main() {
 	int sumMST =0 , sumTSP2=0 , sumTSP1_5=0;
 	int sqMST =0, sqTSP2 =0, sqTSP1_5=0;
 
-	vector<int> MST_COSTS ;
-	vector<int> TSP2_COSTS ;
-	vector<int> TSP1_5_COSTS ;
+	vector<long double> MST_COSTS ;
+	vector<long double> TSP2_COSTS ;
+	vector<long double> TSP1_5_COSTS ;
 
 
 	for(int i=0 ; i<numTrials ; i++) {
@@ -100,8 +103,8 @@ int main() {
 			int tsp15Cost = mst.makeTSP1_5();
 
 			MST_COSTS.push_back(mstCost);
-			// TSP2_COSTS.push_back(tsp2Cost);
-			// TSP1_5_COSTS.push_back(tsp15Cost);
+			TSP2_COSTS.push_back(tsp2Cost);
+			TSP1_5_COSTS.push_back(tsp15Cost);
 
 			sumMST += mstCost;
 			sumTSP2 += tsp2Cost;
@@ -111,25 +114,42 @@ int main() {
 			// sqMST += pow(mstCost , 2);
 			// sqTSP2 += pow(tsp2Cost , 2);
 			// sqTSP1_5 += pow(tsp15Cost , 2);
+
 			cout << mstCost << " " << tsp2Cost << " " << tsp15Cost << endl;
 
 
 	}
 
 
-	// double sum = std::accumulate(MST_COSTS.begin(), MST_COSTS.end(), 0.0);
-	// cout << "sum is " << sum << endl;
-	// double mean2 = sum / MST_COSTS.size();
-	// cout << "mean2 is " << mean2 << endl;
-	// //
-	// double sq_sum = std::inner_product(MST_COSTS.begin(), MST_COSTS.end(), MST_COSTS.begin(), 0.0);
-	// cout << "sq_sum is " << sq_sum << endl;
-	// double stdev = std::sqrt(sq_sum / MST_COSTS.size() - mean2 * mean2);
-	// cout << "stdDev is " << stdev << endl;
-	// cout << "THE STANDARD DEV FOR MST IS    " << stdev << endl;
+	long double sum = std::accumulate(MST_COSTS.begin(), MST_COSTS.end(), 0.0);
+	cout << "sum is " << sum << endl;
+	long double mean2 = sum / MST_COSTS.size();
+	cout << "mean2 is " << mean2 << endl;
+	//
+	long double sq_sum = std::inner_product(MST_COSTS.begin(), MST_COSTS.end(), MST_COSTS.begin(), 0.0);
+	cout << "sq_sum is " << sq_sum << endl;
+ long	double stdev = std::sqrt(sq_sum / MST_COSTS.size() - mean2 * mean2);
+	cout << "stdDev is " << stdev << endl;
+	cout << "THE STANDARD DEV FOR MST IS    " << stdev << endl;
 
 
 
+	long double sumTSP2sd = std::accumulate(TSP2_COSTS.begin(), TSP2_COSTS.end(), 0.0);
+	long double meanTSP2 = sumTSP2sd / TSP2_COSTS.size();
+
+	long double sq_sumTSP2 = std::inner_product(TSP2_COSTS.begin(), TSP2_COSTS.end(), TSP2_COSTS.begin(), 0.0);
+long	double stdevTSP2 = std::sqrt(sq_sumTSP2 / TSP2_COSTS.size() - meanTSP2 * meanTSP2);
+	cout << "THE STANDARD DEV FOR TSP2 IS    " << stdevTSP2 << endl;
+
+
+
+
+	long double sumTSP15sd = std::accumulate(TSP1_5_COSTS.begin(), TSP1_5_COSTS.end(), 0.0);
+	long double meanTSP1_5 = sumTSP15sd / TSP1_5_COSTS.size();
+
+	long double sq_sumTSP1_5 = std::inner_product(TSP1_5_COSTS.begin(), TSP1_5_COSTS.end(), TSP1_5_COSTS.begin(), 0.0);
+long	double stdevTSP1_5 = std::sqrt(sq_sumTSP1_5 / TSP1_5_COSTS.size() - meanTSP1_5 * meanTSP1_5);
+	cout << "THE STANDARD DEV FOR TSP1.5 IS    " << stdevTSP1_5 << endl;
 
 
 
@@ -140,6 +160,16 @@ int main() {
 
 	// cout << (sqMST) << endl;
 	double mean = sumMST/numTrials;
+
+
+
+	// double sum = std::accumulate(v.begin(), v.end(), 0.0);
+  // double mean = sum / v.size();
+
+	// long double sq_sum = inner_product(MST_COSTS.begin(), MST_COSTS.end(), 			MST_COSTS.begin(), 0.0);
+	// double stdev = sqrt(sq_sum / MST_COSTS.size() - mean * mean);
+	// cout << "STD DEV MST IS " << stdev << endl;
+
 	//
 	// for(auto it = MST_COSTS.begin() ; it != MST_COSTS.end()-1 ; it++) {
 	//
@@ -148,11 +178,11 @@ int main() {
 	// }
 	//
 
-	double sqSum = 0;
-	for(int i=0 ; i<numTrials ; i++) {
-		cout << MST_COSTS[i] << endl;
-		sqSum += pow((MST_COSTS[i]) - mean , 2);
-	}
+	// double sqSum = 0;
+	// for(int i=0 ; i<numTrials ; i++) {
+	// 	cout << MST_COSTS[i] << endl;
+	// 	sqSum += pow((MST_COSTS[i]) - mean , 2);
+	// }
 	//
 	// double stdev = 0;
 
