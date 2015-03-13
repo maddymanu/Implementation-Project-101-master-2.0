@@ -1,5 +1,5 @@
 #include "common.h"
-#include "point.h"
+#include "Point.h"
 #include "MST.h"
 #include "Minmatching/PerfectMatching.h"
 
@@ -61,9 +61,9 @@ int main() {
 	int W, H, N;
 	Point pointset;
 
-	W = 100;
-	H = 100;
-	N = 30;
+	W = 5000;
+	H = 7000;
+	N = 100;
 
 
 	cout << "Please Enter Number of Trials n = .... " << endl;
